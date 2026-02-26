@@ -1,0 +1,27 @@
+# ══════════════════════════════════════════════════════════════════════
+# MITRE ATT&CK Threat Analyzer — Azure Deployment Configuration
+#
+# Copy this file to azure/deploy.config and fill in your own values.
+# deploy.config is gitignored — it never gets committed.
+#
+# Notes:
+#   - ACR_NAME must be globally unique across all of Azure
+#   - SQL_SERVER_NAME must be globally unique across all of Azure
+#   - RESOURCE_GROUP must already exist before running setup.sh
+#     Create it with: az group create --name <name> --location <location>
+# ══════════════════════════════════════════════════════════════════════
+
+# ── Azure subscription / region ────────────────────────────────────
+RESOURCE_GROUP="rg-your-group"
+LOCATION="eastus2"
+
+# ── Azure Container Registry ────────────────────────────────────────
+ACR_NAME="yourprojectacr"            # Globally unique, lowercase letters + digits only
+
+# ── Azure Container Apps ────────────────────────────────────────────
+ACA_ENV_NAME="aca-env-your-project"
+ACA_NAME="ca-your-project-backend"
+
+# ── Azure SQL (Serverless) ──────────────────────────────────────────
+SQL_SERVER_NAME="sql-your-project"   # Globally unique
+SQL_DB_NAME="mitre-db"

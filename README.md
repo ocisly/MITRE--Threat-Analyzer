@@ -98,8 +98,9 @@ az group create --name rg-mitre --location eastus2   # skip if group already exi
 ### 2. Configure resource names
 
 ```bash
+cp azure/deploy.config.example azure/deploy.config
 # Edit azure/deploy.config — set your own resource names
-# ACR_NAME and SQL_SERVER_NAME must be globally unique
+# ACR_NAME and SQL_SERVER_NAME must be globally unique across all of Azure
 nano azure/deploy.config
 ```
 
@@ -167,9 +168,9 @@ curl -X POST https://<your-app-url>/api/v1/sync/trigger
 ├── frontend/             # React + CopilotKit SPA
 │   └── src/
 ├── azure/
-│   ├── deploy.config     # Resource names (edit before deploying)
-│   ├── setup.sh          # One-time Azure provisioning
-│   └── deploy.sh         # Build + deploy
+│   ├── deploy.config.example  # Resource names template → copy to deploy.config
+│   ├── setup.sh               # One-time Azure provisioning
+│   └── deploy.sh              # Build + deploy
 ├── .env.example          # Credentials template → copy to .env.local
 ├── docker-compose.yml    # Local dev
 └── Dockerfile            # Multi-stage: Node (npm build) → Python

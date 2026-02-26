@@ -3,6 +3,9 @@
 .env
 frontend/.env.local
 
+# ── Azure deployment config (contains your resource names) ─────────
+azure/deploy.config
+
 # ── Azure deployment state (auto-generated, may contain secrets) ───
 azure/.deploy-state.json
 azure/logs/
