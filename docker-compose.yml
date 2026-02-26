@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    # Load Azure OpenAI keys from .env.local (Docker Compose only auto-loads ".env")
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      # These override anything in env_file — Docker-specific settings
+      DATABASE_URL: sqlite:///./data/mitre.db
+      STIX_DATA_DIR: /app/data/stix
+      MITRE_DOMAINS: '["enterprise-attack"]'
+      SYNC_INTERVAL_HOURS: "24"
+      DEBUG: "true"
+      FRONTEND_URL: http://localhost:5173
+    volumes:
+      # Persist SQLite DB and STIX cache between container restarts
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped

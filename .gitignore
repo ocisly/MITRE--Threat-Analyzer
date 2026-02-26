@@ -1,0 +1,38 @@
+# ── Secrets & local config ─────────────────────────────────────────
+.env.local
+.env
+frontend/.env.local
+
+# ── Azure deployment state (auto-generated, may contain secrets) ───
+azure/.deploy-state.json
+azure/logs/
+
+# ── Design documents (internal, not for public repo) ───────────────
+design/
+
+# ── Runtime data (STIX cache + SQLite DB) ──────────────────────────
+data/
+
+# ── Python ─────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# ── Node.js (frontend) ─────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+
+# ── IDE ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+
+# ── Test artifacts ──────────────────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage

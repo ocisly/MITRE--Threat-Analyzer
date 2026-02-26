@@ -1,0 +1,35 @@
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Local env files (secrets must not enter the image)
+.env
+.env.local
+.env.*.local
+
+# Dev / test
+tests/
+scripts/
+design/
+azure/
+
+# Frontend: node_modules excluded (npm ci runs inside the builder stage),
+# but the source files are needed for the multi-stage build.
+frontend/node_modules/
+frontend/dist/
+
+# Runtime data (mounted as volume or external DB in production)
+data/
+
+# Git
+.git/
+.gitignore
+
+# Misc
+*.log
+*.db
+.venv/
+venv/
+node_modules/
+docker-compose.yml

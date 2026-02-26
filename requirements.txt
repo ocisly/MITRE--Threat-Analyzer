@@ -1,0 +1,14 @@
+fastapi==0.115.6
+aiofiles>=23.2.1
+uvicorn[standard]==0.34.0
+gunicorn==23.0.0
+sqlalchemy==2.0.36
+pydantic>=2.11.2
+pydantic-settings>=2.7.0
+agent-framework-ag-ui==1.0.0b260219
+pyodbc==5.2.0
+mitreattack-python==5.4.1
+apscheduler==3.11.0
+httpx==0.28.1
+python-dotenv==1.1.0
+# stix2 is intentionally omitted — pulled in transitively by mitreattack-python
