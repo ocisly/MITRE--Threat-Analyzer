@@ -49,10 +49,7 @@ cp .env.example .env.local
 
 ### 2. Run with Docker Compose (recommended)
 
-Create the data directories first — Docker bind-mounts `./data` into the container, and on a fresh clone the directory doesn't exist yet. If Docker creates it automatically it will be owned by root, causing a permission error at startup.
-
 ```bash
-mkdir -p data/stix
 docker compose up --build
 ```
 
@@ -223,21 +220,15 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-### `PermissionError: [Errno 13] Permission denied: '/app/data/stix'` in Docker
+### `PermissionError` or `unable to open database file` in Docker
 
-The container runs as a non-root user. If Docker auto-created `./data` on the host (which happens when it doesn't exist at startup), it is owned by root and the container cannot write to it.
+The container's `./data` bind-mount is owned by root — this can happen if Docker auto-created the directory before the first startup, or if `mkdir` was run with `sudo`.
 
-Fix — create the directory yourself before starting the container:
+Fix — take ownership of the directory, then restart:
 
 ```bash
-mkdir -p data/stix
+sudo chown -R $USER:$USER data/
 docker compose up --build
 ```
 
-If the container is already running with the wrong permissions, stop it and recreate:
-
-```bash
-docker compose down
-mkdir -p data/stix
-docker compose up --build
-```
+> **Note:** `docker-compose.yml` already sets `user: "0"` so the container runs as root locally, which prevents this from happening on a fresh clone. You only need the `chown` above if the `data/` directory was previously created with root ownership.

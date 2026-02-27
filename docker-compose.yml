@@ -15,6 +15,11 @@ services:
       SYNC_INTERVAL_HOURS: "24"
       DEBUG: "true"
       FRONTEND_URL: http://localhost:5173
+    # Override the Dockerfile's non-root USER for local dev so the container can
+    # write to the bind-mounted ./data directory regardless of host ownership.
+    # Production (Azure Container Apps) uses the Dockerfile USER appuser directly
+    # and has no bind mount, so this has no effect on the production security model.
+    user: "0"
     volumes:
       # Persist SQLite DB and STIX cache between container restarts
       - ./data:/app/data
