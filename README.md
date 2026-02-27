@@ -49,7 +49,10 @@ cp .env.example .env.local
 
 ### 2. Run with Docker Compose (recommended)
 
+Create the data directories first — Docker bind-mounts `./data` into the container, and on a fresh clone the directory doesn't exist yet. If Docker creates it automatically it will be owned by root, causing a permission error at startup.
+
 ```bash
+mkdir -p data/stix
 docker compose up --build
 ```
 
@@ -192,3 +195,49 @@ Key variables:
 | `SQL_ADMIN_PASSWORD` | Azure deploy | Azure SQL admin password |
 | `DATABASE_URL` | Auto-set | SQLite for local; set by deploy.sh for Azure |
 | `DEBUG` | No | `true` for local dev, `false` for production |
+
+---
+
+## Troubleshooting
+
+### `SyntaxError: Unexpected reserved word` when running `npm run dev`
+
+Your Node.js version is too old. Vite 5 requires **Node 18+**; this project targets **Node 20**.
+
+```
+SyntaxError: Unexpected reserved word     ← Node < 14.8, doesn't support top-level await
+```
+
+Fix using [nvm](https://github.com/nvm-sh/nvm):
+
+```bash
+nvm install 20 && nvm use 20
+# then re-install deps
+rm -rf frontend/node_modules && npm --prefix frontend ci
+```
+
+Or install system-wide on Ubuntu/Debian:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+### `PermissionError: [Errno 13] Permission denied: '/app/data/stix'` in Docker
+
+The container runs as a non-root user. If Docker auto-created `./data` on the host (which happens when it doesn't exist at startup), it is owned by root and the container cannot write to it.
+
+Fix — create the directory yourself before starting the container:
+
+```bash
+mkdir -p data/stix
+docker compose up --build
+```
+
+If the container is already running with the wrong permissions, stop it and recreate:
+
+```bash
+docker compose down
+mkdir -p data/stix
+docker compose up --build
+```
